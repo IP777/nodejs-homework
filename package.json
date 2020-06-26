@@ -1,0 +1,26 @@
+{
+	"name": "nodejs-homework",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index",
+		"dev": "nodemon index"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/IP777/nodejs-homework.git"
+	},
+	"author": "Piter_Ivanov <ivanov.piter.86@gmail.com>",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/IP777/nodejs-homework/issues"
+	},
+	"homepage": "https://github.com/IP777/nodejs-homework#readme",
+	"devDependencies": {
+		"nodemon": "^2.0.4"
+	},
+	"dependencies": {
+		"yargs": "^15.3.1"
+	}
+}
