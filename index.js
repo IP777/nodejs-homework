@@ -1,42 +1,29 @@
-const argv = require("yargs").argv;
+const express = require("express");
+const app = express();
+const dotenv = require("dotenv");
+const morgan = require("morgan");
+const cors = require("cors");
+const contactRouter = require("./api/contacts.router");
 
-const contactsFunc = require("./contacts");
+dotenv.config();
+const PORT = process.env.PORT || 3010;
 
-function invokeAction({ action, id, name, email, phone }) {
-	switch (action) {
-		case "list":
-			contactsFunc.listContacts().then((resp) => console.log(resp));
-			break;
+//Прослойка для обработки запросов от json
+app.use(express.json());
+//Прослойка для обработки запросов от формы
+app.use(express.urlencoded({ extended: true }));
+//Настройки плагина Morgan
+app.use(morgan("combined"));
+app.use(cors());
 
-		case "get":
-			contactsFunc.getContactById(id).then((resp) => console.log(resp));
-			break;
+app.use("/api/contacts/", contactRouter);
 
-		case "add":
-			contactsFunc.addContact(name, email, phone);
-			break;
+// app.use((err, req, res, next) => {
+// 	const { message, status } = err;
 
-		case "remove":
-			contactsFunc.removeContact(id);
-			break;
+// 	res.status(status || 500).send(message);
+// });
 
-		default:
-			console.warn("\x1B[31m Unknown action type!");
-	}
-}
-
-invokeAction(argv);
-
-/*
-# Получаем и выводим весь список контакстов в виде таблицы (console.table)
-node index.js --action="list"
-
-# Получаем контакт по id
-node index.js --action="get" --id=5
-
-# Добавялем контакт
-node index.js --action="add" --name="Mango" --email="mango@gmail.com" --phone="322-22-22"
-
-# Удаляем контакт
-node index.js --action="remove" --id=3
-*/
+app.listen(PORT, () => {
+	console.log(`Example app listening on port ${PORT}!`);
+});
