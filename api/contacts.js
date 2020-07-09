@@ -64,7 +64,6 @@ async function removeContact(contactId) {
 		const data = await listContacts();
 
 		const findContact = data.find((contact) => contact.id === numberId);
-		console.log(findContact);
 		checkToUndefined(findContact);
 
 		const filteredData = data.filter((contact) => contact.id !== numberId);
