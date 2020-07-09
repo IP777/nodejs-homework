@@ -44,7 +44,7 @@ function upUser(req, res, next) {
 	}).min(1);
 	const result = userSchema.validate(req.body);
 	if (result.error) {
-		res.status(400).send(result.error.details[0].message);
+		res.status(400).send({ message: "missing fields" });
 	}
 	next();
 }

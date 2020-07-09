@@ -1,62 +1,63 @@
 const contactsFunc = require("./contacts");
 //Id генераторы
-const uuid = require("uuid");
+//const uuid = require("uuid");
 const castomIdGenerator = () => Math.round(Math.random() * 1000);
 
-function getAllUser(req, res) {
-	contactsFunc
-		.listContacts()
-		.then((resp) => res.status(200).send(resp))
-		.catch((error) => res.status(404).send(error.message));
+async function getAllUser(req, res) {
+	try {
+		const reqContactList = await contactsFunc.listContacts();
+		res.status(200).send(reqContactList);
+	} catch (err) {
+		next(err);
+	}
 }
 
-function getUserByID(req, res) {
+async function getUserByID(req, res, next) {
 	const { contactId } = req.params;
 
-	contactsFunc
-		.getContactById(contactId)
-		.then((resp) => {
-			res.status(200).send(resp);
-		})
-		.catch((error) => res.status(404).send(error.message));
+	try {
+		const reqContact = await contactsFunc.getContactById(contactId);
+		res.status(200).send(reqContact);
+	} catch (err) {
+		next(err);
+	}
 }
 
-function createUser(req, res) {
+async function createUser(req, res, next) {
 	//Использовал кастомный генератор для генерации числового id, в базе используются числовые id
 	const id = castomIdGenerator();
 	// const id =  uuid.v4()
-
 	const newUser = { ...req.body, id };
 
-	contactsFunc
-		.addContact(newUser)
-		.then((resp) => {
-			res.status(200).send(resp);
-		})
-		.catch((error) => res.status(404).send(error.message));
+	try {
+		const reqContact = await contactsFunc.addContact(newUser);
+		res.status(201).send(reqContact);
+	} catch (err) {
+		next(err);
+	}
 }
 
-function deleteUserByID(req, res) {
+async function deleteUserByID(req, res, next) {
 	const { contactId } = req.params;
 
-	contactsFunc
-		.removeContact(contactId)
-		.then((resp) => {
-			res.status(200).send(resp);
-		})
-		.catch((error) => res.status(404).send(error.message));
+	try {
+		const reqContact = await contactsFunc.removeContact(contactId);
+		res.status(200).send(reqContact);
+	} catch (err) {
+		next(err);
+	}
 }
 
-function updateUser(req, res) {
+async function updateUser(req, res, next) {
 	const { contactId } = req.params;
 	const newUser = req.body;
 
-	contactsFunc
-		.udateContact(contactId, newUser)
-		.then((resp) => {
-			res.status(200).send(resp);
-		})
-		.catch((error) => res.status(404).send(error.message));
+	try {
+		const reqContact = await contactsFunc.udateContact(contactId, newUser);
+		res.status(200).send(reqContact);
+	} catch (err) {
+		next(err);
+	}
 }
 
 module.exports = {

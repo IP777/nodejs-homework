@@ -8,19 +8,25 @@ const fsPromises = fs.promises;
 //--------------------------------------check Error-----------------------------
 const checkToNaN = (arg) => {
 	if (isNaN(arg)) {
-		throw new Error("Ups you sent incorrect query parameters.((");
+		const err = new Error("Ups you sent incorrect query parameters.((");
+		err.status = 404;
+		throw err;
 	}
 };
 
 const checkToUndefined = (arg) => {
 	if (arg === undefined) {
-		throw new Error(`Ups contact is not found.(`);
+		const err = new Error(`Ups contact is not found.(`);
+		err.status = 404;
+		throw err;
 	}
 };
 
 const checkUndefinedIndex = (arg) => {
 	if (arg === -1) {
-		throw new Error(`Ups contact is not found.(`);
+		const err = new Error(`Ups contact is not found.(`);
+		err.status = 404;
+		throw err;
 	}
 };
 //-----------------------------------------------------------------------------
@@ -29,8 +35,8 @@ async function listContacts() {
 	try {
 		const data = await fsPromises.readFile(contactsPath, "utf-8");
 		return JSON.parse(data);
-	} catch (error) {
-		throw new Error(error);
+	} catch (err) {
+		throw err;
 	}
 }
 
@@ -45,8 +51,8 @@ async function getContactById(contactId) {
 		checkToUndefined(findContact);
 
 		return findContact;
-	} catch (error) {
-		throw new Error(error);
+	} catch (err) {
+		throw err;
 	}
 }
 
@@ -68,8 +74,8 @@ async function removeContact(contactId) {
 		await fsPromises.writeFile(contactsPath, dataToJSON, "utf-8");
 
 		return { message: `contact deleted` };
-	} catch (error) {
-		throw new Error(error);
+	} catch (err) {
+		throw err;
 	}
 }
 
@@ -91,8 +97,8 @@ async function addContact({ id, name, email, phone }) {
 
 		return `Add object to contact list : 
 	${JSON.stringify(newContactObj)}`;
-	} catch {
-		throw new Error(error);
+	} catch (err) {
+		throw err;
 	}
 }
 
@@ -117,8 +123,8 @@ async function udateContact(id, contact) {
 
 		return `Update object on contact list :
 		 ${JSON.stringify(data[contactIndex])}`;
-	} catch {
-		throw new Error(error);
+	} catch (err) {
+		throw err;
 	}
 }
 
