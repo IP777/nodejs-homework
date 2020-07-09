@@ -2,10 +2,10 @@
 	"name": "nodejs-homework",
 	"version": "1.0.0",
 	"description": "",
-	"main": "server.js",
+	"main": "index.js",
 	"scripts": {
-		"start": "node api/server.js",
-		"dev": "nodemon api/server.js"
+		"start": "node index",
+		"dev": "nodemon index"
 	},
 	"repository": {
 		"type": "git",
