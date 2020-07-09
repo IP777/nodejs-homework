@@ -3,7 +3,7 @@ const contactsFunc = require("./contacts");
 //const uuid = require("uuid");
 const castomIdGenerator = () => Math.round(Math.random() * 1000);
 
-async function getAllUser(req, res) {
+async function getAllUser(req, res, next) {
 	try {
 		const reqContactList = await contactsFunc.listContacts();
 		res.status(200).send(reqContactList);
