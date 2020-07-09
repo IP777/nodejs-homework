@@ -13,8 +13,13 @@ const checkToNaN = (arg) => {
 };
 
 const checkToUndefined = (arg) => {
-	if (arg === (undefined || -1)) {
-		console.log(`Ups contact is not found.(`);
+	if (arg === undefined) {
+		throw new Error(`Ups contact is not found.(`);
+	}
+};
+
+const checkUndefinedIndex = (arg) => {
+	if (arg === -1) {
 		throw new Error(`Ups contact is not found.(`);
 	}
 };
@@ -35,6 +40,7 @@ async function getContactById(contactId) {
 		const numberId = Number(contactId);
 
 		const data = await listContacts();
+
 		const findContact = data.find((contact) => contact.id === numberId);
 		checkToUndefined(findContact);
 
@@ -52,6 +58,7 @@ async function removeContact(contactId) {
 		const data = await listContacts();
 
 		const findContact = data.find((contact) => contact.id === numberId);
+		console.log(findContact);
 		checkToUndefined(findContact);
 
 		const filteredData = data.filter((contact) => contact.id !== numberId);
@@ -89,9 +96,8 @@ async function addContact({ id, name, email, phone }) {
 	}
 }
 
-async function udateContact(contact) {
+async function udateContact(id, contact) {
 	try {
-		const { id } = contact;
 		checkToNaN(id);
 
 		const numberId = Number(id);
@@ -99,7 +105,7 @@ async function udateContact(contact) {
 		const data = await listContacts();
 
 		const contactIndex = data.findIndex((user) => user.id === numberId);
-		checkToUndefined(contactIndex);
+		checkUndefinedIndex(contactIndex);
 
 		data[contactIndex] = {
 			...data[contactIndex],

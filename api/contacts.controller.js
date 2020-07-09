@@ -49,11 +49,10 @@ function deleteUserByID(req, res) {
 
 function updateUser(req, res) {
 	const { contactId } = req.params;
-
-	const newUser = { ...req.body, id: contactId };
+	const newUser = req.body;
 
 	contactsFunc
-		.udateContact(newUser)
+		.udateContact(contactId, newUser)
 		.then((resp) => {
 			res.status(200).send(resp);
 		})
