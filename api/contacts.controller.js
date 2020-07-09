@@ -22,7 +22,7 @@ function getUserByID(req, res) {
 }
 
 function createUser(req, res) {
-	//Использовал кастомный генератор так как он генерирует числовое id, в базе используются числовые id
+	//Использовал кастомный генератор для генерации числового id, в базе используются числовые id
 	const id = castomIdGenerator();
 	// const id =  uuid.v4()
 
