@@ -1,15 +1,9 @@
-# Получаем и выводим весь список контакстов в виде таблицы (console.table)
+# GET /api/contacts
 
-node index.js --action="list"
+# GET /api/contacts/:contactId
 
-# Получаем контакт по id
+# POST /api/contacts
 
-node index.js --action="get" --id=5
+# DELETE /api/contacts/:contactId
 
-# Добавялем контакт
-
-node index.js --action="add" --name="Mango" --email="mango@gmail.com" --phone="322-22-22"
-
-# Удаляем контакт
-
-node index.js --action="remove" --id=3
+# PATCH /api/contacts/:contactId
