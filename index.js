@@ -24,6 +24,21 @@ app.use((err, req, res, next) => {
 	res.status(status || 500).send(message);
 });
 
+mongoose.connect(
+	process.env.MONGO_URL,
+	{
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+		useCreateIndex: true,
+	},
+	(err) => {
+		if (err) {
+			process.exit(1);
+		}
+		console.log("Database connection successful");
+	}
+);
+
 app.listen(PORT, () => {
 	console.log(`Example app listening on port ${PORT}!`);
 });
