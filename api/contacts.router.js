@@ -8,7 +8,8 @@ contactRouter.get("/", controller.getAllUser);
 
 contactRouter.get("/:contactId", validator.userByID, controller.getUserByID);
 
-contactRouter.post("/", validator.createUser, controller.createUser);
+//contactRouter.post("/", validator.createUser, controller.createUser);
+contactRouter.post("/", controller.createUser);
 
 contactRouter.delete(
 	"/:contactId",

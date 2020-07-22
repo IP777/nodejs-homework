@@ -12,12 +12,16 @@ const userShema = new Schema({
 		required: true,
 		validate: (value) => value.includes("@"),
 	},
+	phone: {
+		type: String,
+		required: true,
+	},
 	password: {
 		type: String,
 		required: true,
 	},
 });
 
-const userModel = mongoose.model("User", userShema);
+const userModel = mongoose.model("contact", userShema);
 
 module.exports = userModel;
