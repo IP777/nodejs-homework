@@ -19,6 +19,14 @@ const userShema = new Schema({
 		type: String,
 		required: true,
 	},
+	token: {
+		type: String,
+		required: true,
+	},
+	subscription: {
+		type: String,
+		required: true,
+	},
 });
 
 const userModel = mongoose.model("contacts", userShema);

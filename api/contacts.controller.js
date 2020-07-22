@@ -1,4 +1,11 @@
 const Contact = require("./contacts.model");
+const uuid = require("uuid");
+
+function statusGenerator() {
+	const status = ["free", "premium", "pro"];
+	const random = Math.floor(Math.random() * 2);
+	return status[random];
+}
 
 async function getAllUser(req, res) {
 	const getContactList = await Contact.find();
@@ -6,56 +13,74 @@ async function getAllUser(req, res) {
 	res.status(200).send(getContactList);
 }
 
-async function getUserByID(req, res) {
+async function getUserByID(req, res, next) {
 	const { contactId } = req.params;
+	try {
+		const getContact = await Contact.findById(contactId);
 
-	const getContact = await Contact.findById(contactId);
+		if (!getContact) {
+			const err = new Error(`User with id ${contactId} does not exist`);
+			err.status = 404;
+			throw err;
+		}
 
-	if (!getContact) {
-		const err = new Error(`User with id ${contactId} does not exist`);
-		err.status = 404;
-		throw err;
+		res.status(200).send(getContact);
+	} catch (err) {
+		next(err);
 	}
-
-	res.send(getContact);
 }
 
-// {
-// 	"name": "Shiman",
-// 	"email": "Shiman@egetlacus.ca",
-// 	"phone": "88888888",
-// 	"password": "321456"
-// }
-
-async function createUser(err, req, res) {
+async function createUser(req, res, next) {
 	try {
-		const newContact = await Contact.create({ ...req.body });
+		const token = uuid.v4();
+		const subscription = statusGenerator();
+
+		const newContact = await Contact.create({
+			...req.body,
+			token,
+			subscription,
+		});
+
 		res.status(201).send(newContact);
-	} catch (error) {
-		//res.status(201).send(err.message);
-		//throw err;
-		err(error);
+	} catch (err) {
+		err.status = 404;
+		next(err);
 	}
 }
 
 async function deleteUserByID(req, res, next) {
 	const { contactId } = req.params;
+	try {
+		const deleteContact = await Contact.findOneAndDelete({
+			_id: contactId,
+		});
 
-	const deleteContact = await Contact.findOneAndDelete({ _id: contactId });
+		if (!deleteContact) {
+			const err = new Error(`User with id ${contactId} does not exist`);
+			err.status = 404;
+			throw err;
+		}
 
-	res.send(deleteContact);
+		res.send(deleteContact);
+	} catch (err) {
+		next(err);
+	}
 }
 
 async function updateUser(req, res) {
 	const { contactId } = req.params;
+	try {
+		const userUpdate = await Contact.findOneAndUpdate(
+			{ _id: contactId },
+			{ $set: { ...req.body } },
+			{ new: true }
+		);
 
-	const userUpdate = await Contact.findOneAndUpdate(
-		{ _id: contactId },
-		{ $set: { ...req.body } },
-		{ new: true }
-	);
-
-	res.send(userUpdate);
+		res.status(200).send(userUpdate);
+	} catch (err) {
+		err.status = 404;
+		next(err);
+	}
 }
 
 module.exports = {
