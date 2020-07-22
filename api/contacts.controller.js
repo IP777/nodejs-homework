@@ -2,7 +2,7 @@ const Contact = require("./contacts.model");
 
 async function getAllUser(req, res) {
 	const getContactList = await Contact.find();
-	console.log(getContactList);
+
 	res.status(200).send(getContactList);
 }
 
@@ -20,15 +20,22 @@ async function getUserByID(req, res) {
 	res.send(getContact);
 }
 
-async function createUser(req, res) {
+// {
+// 	"name": "Shiman",
+// 	"email": "Shiman@egetlacus.ca",
+// 	"phone": "88888888",
+// 	"password": "321456"
+// }
+
+async function createUser(err, req, res) {
 	try {
 		const newContact = await Contact.create({ ...req.body });
-	} catch (err) {
-		//res.status(201).send(err);
-		throw err;
+		res.status(201).send(newContact);
+	} catch (error) {
+		//res.status(201).send(err.message);
+		//throw err;
+		err(error);
 	}
-
-	res.status(201).send(newContact);
 }
 
 async function deleteUserByID(req, res, next) {
