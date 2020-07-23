@@ -4,8 +4,9 @@ const dotenv = require("dotenv");
 dotenv.config();
 const morgan = require("morgan");
 const cors = require("cors");
-const contactRouter = require("./api/contacts.router");
 const mongoose = require("mongoose");
+const contactRouter = require("./api/contacts.router");
+const authRouter = require("./api/auth.router");
 
 //Настройки окружения
 const PORT = process.env.PORT || 3010;
@@ -17,8 +18,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("combined"));
 app.use(cors());
 
-//Подключения роутера
+//Подключения роутов
 app.use("/api/contacts/", contactRouter);
+app.use("/auth/", authRouter);
 
 //Глобальная обработка ошибки
 app.use((err, req, res, next) => {
