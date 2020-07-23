@@ -1,61 +1,84 @@
-const contactsFunc = require("./contacts");
-//Id генераторы
-//const uuid = require("uuid");
-const castomIdGenerator = () => Math.round(Math.random() * 1000);
+const Contact = require("./contacts.model");
+const uuid = require("uuid");
 
-async function getAllUser(req, res, next) {
-	try {
-		const reqContactList = await contactsFunc.listContacts();
-		res.status(200).send(reqContactList);
-	} catch (err) {
-		next(err);
-	}
+function statusGenerator() {
+	const status = ["free", "premium", "pro"];
+	const random = Math.floor(Math.random() * 2);
+	return status[random];
+}
+
+async function getAllUser(req, res) {
+	const getContactList = await Contact.find();
+
+	res.status(200).send(getContactList);
 }
 
 async function getUserByID(req, res, next) {
 	const { contactId } = req.params;
-
 	try {
-		const reqContact = await contactsFunc.getContactById(contactId);
-		res.status(200).send(reqContact);
+		const getContact = await Contact.findById(contactId);
+
+		if (!getContact) {
+			const err = new Error(`User with id ${contactId} does not exist`);
+			err.status = 404;
+			throw err;
+		}
+
+		res.status(200).send(getContact);
 	} catch (err) {
 		next(err);
 	}
 }
 
 async function createUser(req, res, next) {
-	//Использовал кастомный генератор для генерации числового id, в базе используются числовые id
-	const id = castomIdGenerator();
-	// const id =  uuid.v4()
-	const newUser = { ...req.body, id };
-
 	try {
-		const reqContact = await contactsFunc.addContact(newUser);
-		res.status(201).send(reqContact);
+		const token = uuid.v4();
+		const subscription = statusGenerator();
+
+		const newContact = await Contact.create({
+			...req.body,
+			token,
+			subscription,
+		});
+
+		res.status(201).send(newContact);
 	} catch (err) {
+		err.status = 404;
 		next(err);
 	}
 }
 
 async function deleteUserByID(req, res, next) {
 	const { contactId } = req.params;
-
 	try {
-		const reqContact = await contactsFunc.removeContact(contactId);
-		res.status(200).send(reqContact);
+		const deleteContact = await Contact.findOneAndDelete({
+			_id: contactId,
+		});
+
+		if (!deleteContact) {
+			const err = new Error(`User with id ${contactId} does not exist`);
+			err.status = 404;
+			throw err;
+		}
+
+		res.send(deleteContact);
 	} catch (err) {
 		next(err);
 	}
 }
 
-async function updateUser(req, res, next) {
+async function updateUser(req, res) {
 	const { contactId } = req.params;
-	const newUser = req.body;
-
 	try {
-		const reqContact = await contactsFunc.udateContact(contactId, newUser);
-		res.status(200).send(reqContact);
+		const userUpdate = await Contact.findOneAndUpdate(
+			{ _id: contactId },
+			{ $set: { ...req.body } },
+			{ new: true }
+		);
+
+		res.status(200).send(userUpdate);
 	} catch (err) {
+		err.status = 404;
 		next(err);
 	}
 }
