@@ -10,6 +10,6 @@
 
 # GET /contacts?page=<№>&limit=<№> -> function pagination
 
-# GET /contacts?sub=<sub> -> filtered from subscription
+# GET /contacts?sub= <sub> -> filtered from subscription
 
 # PATCH /users?sub=<sub>&email=<email> + token -> update subscription from user
