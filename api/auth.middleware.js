@@ -19,8 +19,8 @@ const authorize = async function (req, res, next) {
 	} catch (err) {
 		return res.status(401).send({ message: "Not authorized" });
 	}
+
 	//Если пользователь есть таким токеном то вытягиваем id из токена и находим по нему юзера
-	console.log(token);
 	const payload = jwt.verify(token, process.env.JWT_SECRET);
 	const user = await userModel.findById(payload.id);
 

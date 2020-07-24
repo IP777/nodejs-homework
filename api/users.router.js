@@ -4,6 +4,6 @@ const token = require("./auth.middleware");
 const controller = require("./users.controller");
 
 usersRouter.get("/current", token.authorize, controller.findByTokenUser);
-usersRouter.patch("/:sub", controller.updateSubUser);
+usersRouter.patch("/", token.authorize, controller.updateSubUser);
 
 module.exports = usersRouter;
