@@ -2,24 +2,13 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userShema = new Schema({
-	name: {
-		type: String,
-		required: true,
-	},
 	email: {
 		type: String,
-		required: true,
 		validate: (value) => value.includes("@"),
-	},
-	phone: {
-		type: String,
+		unique: true,
 		required: true,
 	},
 	password: {
-		type: String,
-		required: true,
-	},
-	token: {
 		type: String,
 		required: true,
 	},
@@ -27,7 +16,9 @@ const userShema = new Schema({
 		type: String,
 		enum: ["free", "pro", "premium"],
 		default: "free",
-		required: true,
+	},
+	token: {
+		type: String,
 	},
 });
 

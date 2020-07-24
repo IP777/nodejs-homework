@@ -7,6 +7,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const contactRouter = require("./api/contacts.router");
 const authRouter = require("./api/auth.router");
+const usersRouter = require("./api/users.router");
 
 //Настройки окружения
 const PORT = process.env.PORT || 3010;
@@ -21,13 +22,16 @@ app.use(cors());
 //Подключения роутов
 app.use("/api/contacts/", contactRouter);
 app.use("/auth/", authRouter);
+app.use("/users/", usersRouter);
 
 //Глобальная обработка ошибки
 app.use((err, req, res, next) => {
 	console.log(err);
 	const { message, status } = err;
 
-	res.status(status || 500).send(message);
+	res.status(status || 500).send({
+		message,
+	});
 });
 
 //Подключения mongoose

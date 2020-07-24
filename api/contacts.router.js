@@ -1,16 +1,16 @@
 const { Router } = require("express");
 const contactRouter = Router();
-
+const token = require("./auth.middleware");
 const controller = require("./contacts.controller");
 
-contactRouter.get("/", controller.getAllUser);
+contactRouter.get("/", token.authorize, controller.getAllUser);
 
 contactRouter.get("/:contactId", controller.getUserByID);
 
 contactRouter.post("/", controller.createUser);
 
-contactRouter.delete("/:contactId", controller.deleteUserByID);
+contactRouter.delete("/:contactId", token.authorize, controller.deleteUserByID);
 
-contactRouter.patch("/:contactId", controller.updateUser);
+contactRouter.patch("/:contactId", token.authorize, controller.updateUser);
 
 module.exports = contactRouter;

@@ -2,6 +2,7 @@ const userModel = require("./auth.model");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const uuid = require("uuid");
+var jwt = require("jsonwebtoken");
 
 //helpers---
 function statusGenerator() {
@@ -12,24 +13,87 @@ function statusGenerator() {
 //----------
 
 async function registerUser(req, res, next) {
+	const { email, password } = req.body;
 	try {
-		const hashPass = await bcrypt.hash(req.body.password, saltRounds);
-		console.log(statusGenerator());
+		const hashPass = await bcrypt.hash(password, saltRounds);
 
-		const newContact = {
-			...req.body,
+		const createContact = new userModel({
+			email,
 			password: hashPass,
-			token: uuid.v4(),
 			subscription: statusGenerator(),
-		};
+		});
 
-		res.status(201).send(newContact);
+		const newContact = await createContact.save();
+
+		res.status(201).send({
+			email: newContact.email,
+			password: newContact.password,
+		});
 	} catch (err) {
-		err.status = 404;
+		if (err.code) {
+			const error = new Error(`Email in use`);
+			error.status = 409;
+			next(error);
+		}
+		err.status = 400;
+		next(err);
+	}
+}
+
+async function loginUser(req, res, next) {
+	const { email, password } = req.body;
+	try {
+		const user = await userModel.findOne({ email: email });
+		const result = await bcrypt.compare(password, user.password);
+		if (!result) {
+			throw new Error();
+		}
+
+		//Генерирую токен из id
+		const token = jwt.sign(
+			{
+				id: user._id,
+			},
+			process.env.JWT_SECRET,
+			{ expiresIn: process.env.JWT_EXPIRES }
+		);
+
+		//Добавляю к пользователю токен
+		await userModel.findOneAndUpdate(
+			{ _id: user._id },
+			{ $set: { token: token } },
+			{ new: true }
+		);
+
+		res.status(201).send({
+			email: user.email,
+			subscription: user.subscription,
+		});
+	} catch (err) {
+		next(err);
+	}
+}
+
+async function logoutUser(req, res, next) {
+	const { user } = req;
+	try {
+		await userModel.replaceOne(
+			{ _id: user._id },
+			{
+				email: user.email,
+				password: user.password,
+				subscription: user.subscription,
+			}
+		);
+
+		res.status(204).send("User disconnect");
+	} catch (err) {
 		next(err);
 	}
 }
 
 module.exports = {
 	registerUser,
+	loginUser,
+	logoutUser,
 };
