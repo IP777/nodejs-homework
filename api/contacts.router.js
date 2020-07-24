@@ -3,7 +3,7 @@ const contactRouter = Router();
 const token = require("./auth.middleware");
 const controller = require("./contacts.controller");
 
-contactRouter.get("/", token.authorize, controller.getAllUser);
+contactRouter.get("/", controller.getAllUser);
 
 contactRouter.get("/:contactId", controller.getUserByID);
 
