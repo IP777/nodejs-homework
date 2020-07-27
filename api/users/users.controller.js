@@ -1,4 +1,4 @@
-const userModel = require("./auth.model");
+const userModel = require("../auth/auth.model");
 
 async function findByTokenUser(req, res, next) {
 	const { user } = req;
