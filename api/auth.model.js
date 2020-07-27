@@ -1,37 +1,27 @@
 const mongoose = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
 const Schema = mongoose.Schema;
 
 const userShema = new Schema({
-	name: {
-		type: String,
-		required: true,
-	},
 	email: {
 		type: String,
-		required: true,
 		validate: (value) => value.includes("@"),
-	},
-	phone: {
-		type: String,
+		unique: true,
 		required: true,
 	},
 	password: {
 		type: String,
 		required: true,
 	},
-	token: {
-		type: String,
-		required: true,
-	},
 	subscription: {
 		type: String,
-		required: true,
+		enum: ["free", "pro", "premium"],
+		default: "free",
+	},
+	token: {
+		type: String,
 	},
 });
 
-userShema.plugin(mongoosePaginate);
-
-const userModel = mongoose.model("contacts", userShema);
+const userModel = mongoose.model("users", userShema);
 
 module.exports = userModel;

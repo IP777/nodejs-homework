@@ -8,6 +8,22 @@ function statusGenerator() {
 }
 
 async function getAllUser(req, res) {
+	//Пагинацию для коллекции контактов
+	const { page, limit } = req.query;
+	if (page && limit) {
+		const contactPagination = await Contact.paginate(
+			{},
+			{ page: page, limit: limit }
+		);
+		res.status(200).send(contactPagination.docs);
+	}
+
+	const { sub } = req.query;
+	if (sub) {
+		const usersBySub = await Contact.find({ subscription: sub });
+		res.status(200).send(usersBySub);
+	}
+
 	const getContactList = await Contact.find();
 
 	res.status(200).send(getContactList);
