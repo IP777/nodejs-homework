@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("combined"));
 app.use(cors());
+app.use(express.static(__dirname + "/public"));
 
 //Подключения роутов
 app.use("/api/contacts/", contactRouter);
