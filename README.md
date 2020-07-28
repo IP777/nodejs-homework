@@ -1,4 +1,6 @@
-# MONGO DB imageloader
+# MONGO DB Imageloader
+
+# http://locahost:<порт>/images/<имя файла с расширением>
 
 # POST /auth/register + {email,password}
 
