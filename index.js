@@ -5,9 +5,9 @@ dotenv.config();
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const contactRouter = require("./api/contacts.router");
-const authRouter = require("./api/auth.router");
-const usersRouter = require("./api/users.router");
+const contactRouter = require("./api/contacts/contacts.router");
+const authRouter = require("./api/auth/auth.router");
+const usersRouter = require("./api/users/users.router");
 
 //Настройки окружения
 const PORT = process.env.PORT || 3010;
