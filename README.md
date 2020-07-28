@@ -1,4 +1,4 @@
-# MONGO DB Authorization
+# MONGO DB imageloader
 
 # POST /auth/register + {email,password}
 
