@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const contactRouter = require("./api/contacts/contacts.router");
 const authRouter = require("./api/auth/auth.router");
 const usersRouter = require("./api/users/users.router");
+const uploadRouter = require("./api/upload/upload.router");
 
 //Настройки окружения
 const PORT = process.env.PORT || 3010;
@@ -24,6 +25,7 @@ app.use(express.static(__dirname + "/public"));
 app.use("/api/contacts/", contactRouter);
 app.use("/auth/", authRouter);
 app.use("/users/", usersRouter);
+app.use("/", uploadRouter);
 
 //Глобальная обработка ошибки
 app.use((err, req, res, next) => {
