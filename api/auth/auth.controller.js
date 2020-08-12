@@ -21,7 +21,7 @@ function statusGenerator() {
 async function registerUser(req, res, next) {
 	const { email, password } = req.body;
 	const { filename } = req.file;
-	//console.log("req.body", req.file);
+
 	try {
 		const hashPass = await bcrypt.hash(password, saltRounds);
 
@@ -34,7 +34,6 @@ async function registerUser(req, res, next) {
 
 		const newContact = await createContact.save();
 
-		console.log("createContact", createContact);
 		res.status(201).send({
 			email: newContact.email,
 			password: newContact.password,

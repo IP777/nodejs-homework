@@ -7,7 +7,6 @@ function loginUser(req, res, next) {
 	});
 	const result = schema.validate(req.body);
 	if (result.error) {
-		//const error = new Error(`Email or password is wrong`);
 		result.error.status = 400;
 		next(result.error);
 	}
