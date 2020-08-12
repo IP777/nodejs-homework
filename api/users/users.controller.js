@@ -11,7 +11,7 @@ async function findByTokenUser(req, res, next) {
 		next(err);
 	}
 }
-//?sub=pro&email=shiman777@vestibul.co.uk
+
 async function updateSubUser(req, res, next) {
 	const { email, sub } = req.query;
 	try {
@@ -46,7 +46,16 @@ async function updateSubUser(req, res, next) {
 	}
 }
 
+async function userUpdate(req, res, next) {
+	try {
+		res.status(204).send("OK");
+	} catch (err) {
+		next(err);
+	}
+}
+
 module.exports = {
 	findByTokenUser,
 	updateSubUser,
+	userUpdate,
 };

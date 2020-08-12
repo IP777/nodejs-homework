@@ -4,6 +4,12 @@ const saltRounds = 10;
 const uuid = require("uuid");
 var jwt = require("jsonwebtoken");
 
+const dotenv = require("dotenv");
+dotenv.config();
+
+//Настройки окружения
+const PORT = process.env.PORT || 3010;
+
 //helpers---
 function statusGenerator() {
 	const status = ["free", "premium", "pro"];
@@ -14,6 +20,8 @@ function statusGenerator() {
 
 async function registerUser(req, res, next) {
 	const { email, password } = req.body;
+	const { filename } = req.file;
+	//console.log("req.body", req.file);
 	try {
 		const hashPass = await bcrypt.hash(password, saltRounds);
 
@@ -21,10 +29,12 @@ async function registerUser(req, res, next) {
 			email,
 			password: hashPass,
 			subscription: statusGenerator(),
+			avatarURL: `http://localhost:${PORT}/images/${filename}`,
 		});
 
 		const newContact = await createContact.save();
 
+		console.log("createContact", createContact);
 		res.status(201).send({
 			email: newContact.email,
 			password: newContact.password,
