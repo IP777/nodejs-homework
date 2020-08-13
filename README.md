@@ -15,3 +15,5 @@
 # GET /contacts?sub= <...> -> filtered from subscription
 
 # PATCH /users?sub=<...>&email=<...> + token -> update subscription from user
+
+# POST /form-data + fotm-data KEY:file_example VALUE:<file>

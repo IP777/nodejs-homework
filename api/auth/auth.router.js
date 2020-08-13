@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const authRouter = Router();
 const controller = require("./auth.controller");
-const validator = require("../../helpers/validator");
+const validator = require("../middleware/validator");
 const token = require("./auth.middleware");
 const { generateAvatar } = require("../middleware/avatarGenerator");
 const { minificationFile } = require("../middleware/imageMinifacator");
