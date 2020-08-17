@@ -7,8 +7,8 @@ async function generateAvatar(req, res, next) {
 		const FOLDER = "tmp/";
 		const NAME = "ava-" + Date.now() + ".png";
 
-		avatar.create("gabriel").then((buffer) => {
-			fs.writeFileSync(FOLDER + NAME, buffer);
+		avatar.create("gabriel").then(async (buffer) => {
+			await fs.promises.writeFile(FOLDER + NAME, buffer);
 		});
 
 		//Генерирую фаил и отправляю дальше
