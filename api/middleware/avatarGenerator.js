@@ -4,6 +4,7 @@ const fs = require("fs");
 async function generateAvatar(req, res, next) {
 	try {
 		const avatar = Avatar.identiconBuilder(128);
+
 		const FOLDER = "tmp/";
 		const NAME = "ava-" + Date.now() + ".png";
 

@@ -1,11 +1,11 @@
 const userModel = require("./auth.model");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const uuid = require("uuid");
 var jwt = require("jsonwebtoken");
-
-const dotenv = require("dotenv");
-dotenv.config();
+const uuid = require("uuid");
+const sgMail = require("@sendgrid/mail");
+const { sendMail } = require("./email.client");
+require("dotenv").config();
 
 //Настройки окружения
 const PORT = process.env.PORT || 3010;
@@ -24,12 +24,16 @@ async function registerUser(req, res, next) {
 
 	try {
 		const hashPass = await bcrypt.hash(password, saltRounds);
+		const verificationToken = uuid.v4();
 
+		sendMail(email, verificationToken);
+		console.log("verificationToken", verificationToken);
 		const createContact = new userModel({
 			email,
 			password: hashPass,
 			subscription: statusGenerator(),
 			avatarURL: `http://localhost:${PORT}/images/${filename}`,
+			verificationToken,
 		});
 
 		const newContact = await createContact.save();
@@ -101,8 +105,31 @@ async function logoutUser(req, res, next) {
 	}
 }
 
+async function vertificationMail(req, res, next) {
+	const { verificationToken } = req.params;
+	try {
+		const user = await userModel.findOneAndUpdate(
+			{ verificationToken: verificationToken },
+			{
+				verificationToken: null,
+			}
+		);
+
+		if (!user) {
+			const error = new Error("User not found or already verified");
+			error.status = 404;
+			throw error;
+		}
+
+		res.send("Congratulation your account is vitrified");
+	} catch (err) {
+		next(err);
+	}
+}
+
 module.exports = {
 	registerUser,
 	loginUser,
 	logoutUser,
+	vertificationMail,
 };
