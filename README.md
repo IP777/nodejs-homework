@@ -1,6 +1,6 @@
 # MONGO Mailer
 
-# Add vrified token send on your real email
+# Add vrified token, send on your real email
 
 # http://locahost:<порт>/images/<имя файла с расширением>
 
