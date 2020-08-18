@@ -1,6 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-/package-lock.json
+package-lock.json
 /tmp
 
 # server
@@ -18,7 +17,7 @@
 /build
 
 # dotenv environment varieble files
-/*.env
+.env
 
 # misc
 .DS_Store
