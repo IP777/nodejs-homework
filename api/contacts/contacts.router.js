@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const contactRouter = Router();
-const token = require("./auth.middleware");
+const token = require("../auth/auth.middleware");
 const controller = require("./contacts.controller");
 
 contactRouter.get("/", controller.getAllUser);

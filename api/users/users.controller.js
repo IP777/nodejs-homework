@@ -1,4 +1,9 @@
-const userModel = require("./auth.model");
+const userModel = require("../auth/auth.model");
+const path = require("path");
+require("dotenv").config();
+
+//Настройки окружения
+const PORT = process.env.PORT || 3010;
 
 async function findByTokenUser(req, res, next) {
 	const { user } = req;
@@ -11,7 +16,7 @@ async function findByTokenUser(req, res, next) {
 		next(err);
 	}
 }
-//?sub=pro&email=shiman777@vestibul.co.uk
+
 async function updateSubUser(req, res, next) {
 	const { email, sub } = req.query;
 	try {
@@ -46,7 +51,29 @@ async function updateSubUser(req, res, next) {
 	}
 }
 
+async function updateAvatar(req, res, next) {
+	try {
+		const filter = { token: req.user.token };
+		const avatarUrl = `http://localhost:${PORT}/images/${req.file.filename}`;
+
+		await userModel.findOneAndUpdate(
+			filter,
+			{
+				$set: {
+					avatarURL: avatarUrl,
+				},
+			},
+			{ new: true }
+		);
+
+		res.send({ avatarURL: avatarUrl });
+	} catch (err) {
+		next(err);
+	}
+}
+
 module.exports = {
 	findByTokenUser,
 	updateSubUser,
+	updateAvatar,
 };
