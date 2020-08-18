@@ -1,4 +1,4 @@
-# MONGO DB Imageloader
+# MONGO DB Imageloader 5
 
 # http://locahost:<порт>/images/<имя файла с расширением>
 
