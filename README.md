@@ -1,4 +1,4 @@
-# MONGO DB Imageloader
+# MONGO Mailer
 
 # http://locahost:<порт>/images/<имя файла с расширением>
 
