@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 var jwt = require("jsonwebtoken");
 const uuid = require("uuid");
-const sgMail = require("@sendgrid/mail");
+//const sgMail = require("@sendgrid/mail");
 const { sendMail } = require("./email.client");
 require("dotenv").config();
 
@@ -27,7 +27,7 @@ async function registerUser(req, res, next) {
 		const verificationToken = uuid.v4();
 
 		sendMail(email, verificationToken);
-		console.log("verificationToken", verificationToken);
+
 		const createContact = new userModel({
 			email,
 			password: hashPass,
