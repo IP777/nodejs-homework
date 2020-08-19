@@ -19,7 +19,8 @@
 	"homepage": "https://github.com/IP777/nodejs-homework#readme",
 	"devDependencies": {
 		"mocha": "^8.1.1",
-		"nodemon": "^2.0.4"
+		"nodemon": "^2.0.4",
+		"should": "^13.2.3"
 	},
 	"dependencies": {
 		"@hapi/joi": "^17.1.1",
