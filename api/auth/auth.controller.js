@@ -109,7 +109,7 @@ async function vertificationFromMail(req, res, next) {
 	const { vertificationToken } = req.params;
 	try {
 		const user = await userModel.findOneAndUpdate(
-			{ vertificationToken: vertificationToken },
+			{ vertificationToken },
 			{
 				vertificationToken: null,
 			}
