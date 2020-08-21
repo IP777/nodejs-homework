@@ -21,7 +21,7 @@ const userShema = new Schema({
 	token: {
 		type: String,
 	},
-	verificationToken: {
+	vertificationToken: {
 		type: String,
 		required: false,
 	},

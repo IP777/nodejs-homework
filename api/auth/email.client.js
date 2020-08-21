@@ -3,7 +3,6 @@
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 
-//Написано не очень но работает )
 async function sendMail(email, vertificationToken) {
 	sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 	const msg = {
@@ -14,13 +13,10 @@ async function sendMail(email, vertificationToken) {
 		html: `<a href="http://localhost:3010/auth/verify/${vertificationToken}">Vertificate you token</a>`,
 	};
 
-	const main = async function () {
-		const [response] = await sgMail.send(msg);
+	const [response] = await sgMail.send(msg);
 
-		console.log(response);
-	};
-
-	main();
+	console.log(response);
+	return response;
 }
 
 module.exports = { sendMail };

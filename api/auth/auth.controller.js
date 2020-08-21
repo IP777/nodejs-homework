@@ -24,16 +24,16 @@ async function registerUser(req, res, next) {
 
 	try {
 		const hashPass = await bcrypt.hash(password, saltRounds);
-		const verificationToken = uuid.v4();
+		const vertificationToken = uuid.v4();
 
-		sendMail(email, verificationToken);
+		sendMail(email, vertificationToken);
 
 		const createContact = new userModel({
 			email,
 			password: hashPass,
 			subscription: statusGenerator(),
 			avatarURL: `http://localhost:${PORT}/images/${filename}`,
-			verificationToken,
+			vertificationToken,
 		});
 
 		const newContact = await createContact.save();
@@ -105,13 +105,13 @@ async function logoutUser(req, res, next) {
 	}
 }
 
-async function vertificationMail(req, res, next) {
+async function vertificationFromMail(req, res, next) {
 	const { verificationToken } = req.params;
 	try {
 		const user = await userModel.findOneAndUpdate(
-			{ verificationToken: verificationToken },
+			{ vertificationToken: verificationToken },
 			{
-				verificationToken: null,
+				vertificationToken: null,
 			}
 		);
 
@@ -131,5 +131,5 @@ module.exports = {
 	registerUser,
 	loginUser,
 	logoutUser,
-	vertificationMail,
+	vertificationFromMail,
 };
