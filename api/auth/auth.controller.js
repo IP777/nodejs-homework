@@ -43,11 +43,11 @@ async function registerUser(req, res, next) {
 			password: newContact.password,
 		});
 	} catch (err) {
-		if (err.code) {
-			const error = new Error(`Email in use`);
-			error.status = 409;
-			next(error);
-		}
+		// if (err.code) {
+		// 	const error = new Error(`Email in use`);
+		// 	error.status = 409;
+		// 	next(error);
+		// }
 		err.status = 400;
 		next(err);
 	}
