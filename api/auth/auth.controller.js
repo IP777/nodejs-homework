@@ -26,7 +26,7 @@ async function registerUser(req, res, next) {
 		const hashPass = await bcrypt.hash(password, saltRounds);
 		const vertificationToken = uuid.v4();
 
-		sendMail(email, vertificationToken);
+		await sendMail(email, vertificationToken);
 
 		const createContact = new userModel({
 			email,
