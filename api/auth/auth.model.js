@@ -21,6 +21,10 @@ const userShema = new Schema({
 	token: {
 		type: String,
 	},
+	vertificationToken: {
+		type: String,
+		required: false,
+	},
 });
 
 const userModel = mongoose.model("users", userShema);
